@@ -1,21 +1,57 @@
-import { StatusBar } from 'expo-status-bar';
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import React, { useState, useEffect } from "react";
+import { Text, View, FlatList, Pressable, Modal, Alert, TextInput } from "react-native";
 
-export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
+//Importamos los colores
+import styles from './Styles'
+import Colors from './Colores'
+
+const ProtocolScreen = () => {
+  const [labelMax, setLabelMax] = useState(2);
+  const [placeDetailVisible, setPlaceDetailVisible] = useState(true);
+  const [labelAcount, setLabelAcount] = useState(1);
+
+	return(
+		<View style={styles.container}>
+      
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={placeDetailVisible}
+        onRequestClose={() => {
+          Alert.alert("Create protocol form has been closed.");
+          setPlaceDetailVisible(!placeDetailVisible);
+        }}
+      >
+        <View style={styles.centeredView}>
+          <View style={styles.modalView}>
+            <Text style={styles.titleModal}>Protocol detail {labelAcount} / {labelMax}</Text>
+            <Pressable
+              style={[styles.button]}
+              onPress={() => {
+                /* Funcion para guardar datos en una array, con push
+                
+                  Data.push[modalValues]
+                */
+                  setLabelAcount(labelAcount+1)
+                if (labelAcount == labelMax) {
+                  setPlaceDetailVisible(false)
+                }
+              }}>
+              <Text style={styles.fontButton}>Continue</Text>
+            </Pressable>
+          </View>
+        </View>
+      </Modal>
+      <Pressable
+        style={styles.button}
+        onPress = {()=>{
+          setPlaceDetailVisible(!placeDetailVisible);
+        }}
+      >
+        <Text>Continuar</Text>
+      </Pressable>
+		</View>
+	);
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+export default ProtocolScreen;
